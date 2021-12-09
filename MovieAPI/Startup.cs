@@ -45,22 +45,24 @@ namespace MovieAPI
 
             services.AddCors(option =>
             {
-                option.AddPolicy("CorsPolicy", policy =>
-                {
-                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200/");
-                });
+                option.AddPolicy("CorsPolicy",
+                    policy => { policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200/"); });
             });
 
             services.AddControllers();
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "Lab2.Warehouse", Version = "v1" }); });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Lab2.Warehouse", Version = "v1"});
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,ILogger<Startup> logger)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             if (env.IsDevelopment())
             {
-                app.Use(async (context, next) => {
+                app.Use(async (context, next) =>
+                {
                     logger.LogDebug("[{Now}] {Method} {Scheme}://{Host}{Path}",
                         DateTime.Now,
                         context.Request.Method,
@@ -70,20 +72,16 @@ namespace MovieAPI
                     await next.Invoke();
                 });
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Lab2.Warehouse v1"));
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Lab2.Warehouse v1"));
             app.UseRouting();
             app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

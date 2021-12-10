@@ -73,7 +73,7 @@ namespace MovieAPI
                 });
                 app.UseDeveloperExceptionPage();
             }
-
+//com
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Lab2.Warehouse v1"));
             app.UseRouting();
